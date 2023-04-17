@@ -3,23 +3,40 @@ require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
 const session = require("express-session");
-const store = new session.MemoryStore();
+const cookieParser = require("cookie-parser");
+const usersRoute = require("./routes/usersRoutes.js");
+
+// global variables
+const oneDay = 1000 * 60 * 60 * 24;
 
 // defining the port
 const port = process.env.PORT || 4000;
 
 // initialising server
-const server = express();
+const app = express();
 
 // applying middleware
-server.use(express.json())
-server.use(cors());
+app.use(express.json());
+app.use(cors());
+app.use(cookieParser());
+
+app.use(
+  session({
+    secret: process.env.SECRET,
+    saveUninitialized: true,
+    resave: false,
+    cookie: { maxAge: oneDay },
+  })
+);
 
 // running the server on the specified port
-server.listen(port, () => {
-    console.log(`NotesAI server running on port: ${port}`);
+app.listen(port, () => {
+  console.log(`NotesAI server running on port: ${port}`);
 });
 
-server.get("/", (req, res) => {
-    res.status(200).send("Welcome to the NotesAI api!");
-})
+app.get("/", (req, res) => {
+  res.status(200).send("Welcome to the NotesAI api!");
+});
+
+// users route
+app.use("/users", usersRoute);
