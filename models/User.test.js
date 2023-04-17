@@ -1,27 +1,23 @@
 require("dotenv").config();
-const { beforeEach } = require("node:test");
 const User = require("./User.js");
-const { Pool } = require("pg");
 
 describe("User Model", () => {
-    let testDB;
 
-    beforeAll(async () => {
-        testDB = new Pool({
-            connectionString: process.env.TEST_DB_URL,
-            max: 1,
-            idleTimeoutMillis: 0,
+    describe("getUserById function", () => {
+        it("should exist", async () => {
+            expect(User.getUserById()).toBeDefined();
         });
+
+        it("should return false if id does not exist in the database", async () => {
+            expect(await User.getUserById("1cddc7e1-54a3-4e16-9d27-60786697cdb8")).toBe(false);
+        })
+
+        it("should return the correct user if the specified id exists in the database", async () => {
+            const user = {username: "testuser", email: "testuser@gmail.com", hashedPassword: "password"}
+            const newUser = await User.create(user);
+
+            const { user_id } = newUser;
+            expect(await User.getUserById(user_id)).toStrictEqual(newUser);
+        })
     });
-
-    beforeEach(async () => {
-        await testDB.query("CREATE TABLE users( user_id uuid DEFAULT uuid_generate_v4 (), username VARCHAR(100) NOT NULL UNIQUE, email VARCHAR(155) NOT NULL UNIQUE, password VARCHAR(100) NOT NULL, PRIMARY KEY(user_id));");
-    });
-
-    afterEach(async () => {
-        await testDB.query("DROP TABLE IF EXISTS users");
-    })
-
-
-
 });
