@@ -1,9 +1,10 @@
-require('dotenv').config();
+// file to setup and load the database with values
+require("dotenv").config();
 
-const fs = require('fs');
-const db = require('./db_connect');
+const fs = require("fs");
+const db = require("./db_connect.js");
 
-const sql = fs.readFileSync('./setup.sql').toString();
+const sql = fs.readFileSync("./database/setup.sql").toString();
 
 db.query(sql)
   .then((data) => {

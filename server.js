@@ -3,23 +3,23 @@ require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
 const session = require("express-session");
-const store = new session.MemoryStore();
+
 
 // defining the port
 const port = process.env.PORT || 4000;
 
 // initialising server
-const server = express();
+const app = express();
 
 // applying middleware
-server.use(express.json())
-server.use(cors());
+app.use(express.json());
+app.use(cors());
 
 // running the server on the specified port
-server.listen(port, () => {
+app.listen(port, () => {
     console.log(`NotesAI server running on port: ${port}`);
 });
 
-server.get("/", (req, res) => {
+app.get("/", (req, res) => {
     res.status(200).send("Welcome to the NotesAI api!");
-})
+});
