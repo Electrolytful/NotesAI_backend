@@ -5,6 +5,7 @@ const express = require("express");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const usersRoute = require("./routes/usersRoutes.js");
+const notesRoute = require("./routes/notesRoutes.js");
 
 // global variables
 const oneDay = 1000 * 60 * 60 * 24;
@@ -40,3 +41,6 @@ app.get("/", (req, res) => {
 
 // users route
 app.use("/users", usersRoute);
+
+// notes route
+app.use("/notes", notesRoute);
