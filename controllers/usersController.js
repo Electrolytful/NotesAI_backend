@@ -76,8 +76,11 @@ async function loginUser(req, res) {
       res.status().json({ error: "Incorrect password!" });
     } else {
       req.session.userid = user.user_id;
+      req.session.username = user.username;
       res.status(200).send(req.session);
-      console.log(`User with username: ${user.username} just logged in!`);
+      console.log(
+        `User with username: ${req.session.username} just logged in!`
+      );
     }
   } catch (err) {
     return res.status(403).json({ error: err.message });
@@ -86,7 +89,9 @@ async function loginUser(req, res) {
 
 // function to logout the user
 async function logoutUser(req, res) {
+  console.log(`User with username: ${req.session.username} just logged out!`);
   req.session.userid = null;
+  req.session.username = null;
   res.status(200).json({ message: "Successfully logged out!" });
 }
 

@@ -31,11 +31,13 @@ app.use(
   })
 );
 
-app.use(cors({
-  origin: "http://localhost:5173",
-  methods: ["POST", "PUT", "GET", "PATCH", "OPTIONS", "HEAD"],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["POST", "PUT", "GET", "PATCH", "OPTIONS", "HEAD"],
+    credentials: true,
+  })
+);
 
 // running the server on the specified port
 app.listen(port, () => {
