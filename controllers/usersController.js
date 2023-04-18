@@ -74,9 +74,13 @@ async function loginUser(req, res) {
 // function to logout the user
 async function logoutUser(req, res) {
   console.log(req.session);
-  req.session.userid = null;
+  if(req.session.userid) {
+    req.session.userid = null;
+    res.status(200).json({ message: "Successfully logged out!" });
+  } else {
+    res.status(400).json({error: "No user logon!"});
+  }
   console.log(req.session);
-  res.status(200).json({ message: "Successfully logged out!" });
 }
 
 // function to delete a user
