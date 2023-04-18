@@ -4,6 +4,7 @@ const cors = require("cors");
 const express = require("express");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
+const store = new session.MemoryStore();
 const usersRoute = require("./routes/usersRoutes.js");
 const notesRoute = require("./routes/notesRoutes.js");
 
@@ -18,17 +19,23 @@ const app = express();
 
 // applying middleware
 app.use(express.json());
-app.use(cors());
 app.use(cookieParser());
 
 app.use(
   session({
     secret: process.env.SECRET,
-    saveUninitialized: true,
+    saveUninitialized: false,
     resave: false,
-    cookie: { maxAge: oneDay },
+    cookie: { maxAge: oneDay, sameSite: false },
+    store,
   })
 );
+
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: ["POST", "PUT", "GET", "PATCH", "OPTIONS", "HEAD"],
+  credentials: true,
+}));
 
 // running the server on the specified port
 app.listen(port, () => {
