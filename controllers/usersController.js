@@ -101,6 +101,7 @@ async function destroyUser(req, res) {
 
   const deletedUser = await user.destroy();
   req.session.userid = null;
+  req.session.username = null;
   res.status(200).json(deletedUser);
 }
 
