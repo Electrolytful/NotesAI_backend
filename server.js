@@ -3,7 +3,6 @@ require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
 const session = require("express-session");
-const store = new session.MemoryStore();
 const cookieParser = require("cookie-parser");
 const store = new session.MemoryStore();
 const usersRoute = require("./routes/usersRoutes.js");
