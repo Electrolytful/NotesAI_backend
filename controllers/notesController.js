@@ -45,11 +45,24 @@ async function destroyNote(req, res) {
 
   const note = await Note.getUserNoteById(parseInt(id));
 
-  if (note && note.user_id === req.session.userid) {
+  if (note && note.user_id == req.session.userid) {
     const deletedNote = await note.destroy();
     res.status(200).json(deletedNote);
   } else {
     res.status(404).json({ error: "No note with that ID found!" });
+  }
+}
+
+async function updateNote(req, res) {
+  const id = req.params.id;
+
+  const note = await Note.getUserNoteById(parseInt(id));
+
+  if(note && note.user_id == req.session.userid) {
+    const updatedNote = await note.update(req.body);
+    res.status(200).json(updatedNote);
+  } else {
+    res.status(404).json({error: "No note with that ID found!"});
   }
 }
 
@@ -58,4 +71,5 @@ module.exports = {
   getNoteById,
   createNote,
   destroyNote,
+  updateNote,
 };

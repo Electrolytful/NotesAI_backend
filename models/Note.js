@@ -50,6 +50,17 @@ class Note {
     );
     return new Note(result.rows[0]);
   }
+
+  async update(newNote) {
+    const { title, content } = newNote;
+
+    const result = await db.query(
+      "UPDATE notes SET title = $1, content = $2 WHERE notes_id = $3 RETURNING *;",
+      [title, content, this.notes_id]
+    );
+
+    return new Note(result.rows[0]);
+  }
 }
 
 module.exports = Note;
