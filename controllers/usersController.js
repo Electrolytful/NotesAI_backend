@@ -1,6 +1,7 @@
 // imports
 const bcrypt = require("bcrypt");
 const User = require("../models/User.js");
+const session = require("express-session");
 
 // function to display the user currently logged in
 async function displayUser(req, res) {
@@ -48,7 +49,6 @@ async function loginUser(req, res) {
   try {
     // check if user with the specified email exists, if not send an error message
     const user = await User.getUserByEmail(email);
-
     if (!user) {
       res.status(404).json({ error: "No user registered with that email!" });
     }
@@ -59,8 +59,7 @@ async function loginUser(req, res) {
     if (!passwordCheck) {
       res.status().json({ error: "Incorrect password!" });
     } else {
-      session = req.session;
-      session.userid = user.user_id;
+      req.session.userid = user.user_id;
       res
         .status(200)
         .json({ message: `Successfully logged in user: ${user.username}` });

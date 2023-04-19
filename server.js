@@ -3,6 +3,7 @@ require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
 const session = require("express-session");
+const store = new session.MemoryStore();
 const cookieParser = require("cookie-parser");
 const usersRoute = require("./routes/usersRoutes.js");
 const notesRoute = require("./routes/notesRoutes.js");
@@ -27,6 +28,7 @@ app.use(
     saveUninitialized: true,
     resave: false,
     cookie: { maxAge: oneDay },
+    store
   })
 );
 
