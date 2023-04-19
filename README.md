@@ -30,3 +30,14 @@
 | /new        | POST        | creates a new note in the database with the logged in users id, returns a JSON object of the created note                          |
 | /:id        | GET         | gets the note with the specified id, returns a JSON object of the note or an error if not found                                    |
 | /:id        | DELETE      | deletes the note with the specified id, returns a JSON object of the deleted note or an error if not found                         |
+
+
+
+### Questions routes  /questions
+
+| Route       | METHOD      | Description                                                                                                                        |
+| ----------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| /           | GET         | gets all the questions corresponding to the current logged in user, returns an array of questions or an empty array                |
+| /new        | POST        | creates a new question in the database with the logged in users id, returns a JSON object of the created question                  |
+| /:id        | GET         | gets the question with the specified id, returns a JSON object of the question or an error if not found                            |
+| /:id        | DELETE      | deletes the question with the specified id, returns a JSON object of the deleted question or an error if not found                 |

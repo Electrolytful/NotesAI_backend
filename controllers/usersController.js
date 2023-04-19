@@ -67,17 +67,19 @@ async function loginUser(req, res) {
 
     if (!user) {
       res.status(404).json({ error: "No user registered with that email!" });
+      return;
     }
 
     // compare the password given and the hashed password stored in the database, if they dont match send error else set the user to be authenticated with cookie
     const passwordCheck = await bcrypt.compare(password, user.password);
 
     if (!passwordCheck) {
-      res.status().json({ error: "Incorrect password!" });
+      res.status(400).json({ error: "Incorrect password!" });
+      return;
     } else {
       req.session.userid = user.user_id;
       req.session.username = user.username;
-      res.status(200).send(req.session);
+      res.status(200).json(req.session);
       console.log(
         `User with username: ${req.session.username} just logged in!`
       );
@@ -101,6 +103,7 @@ async function destroyUser(req, res) {
 
   const deletedUser = await user.destroy();
   req.session.userid = null;
+  req.session.username = null;
   res.status(200).json(deletedUser);
 }
 

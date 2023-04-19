@@ -7,12 +7,13 @@ const cookieParser = require("cookie-parser");
 const store = new session.MemoryStore();
 const usersRoute = require("./routes/usersRoutes.js");
 const notesRoute = require("./routes/notesRoutes.js");
+const questionsRoute = require("./routes/questionsRoutes.js");
 
 // global variables
 const oneDay = 1000 * 60 * 60 * 24;
 
 // defining the port
-const port = process.env.PORT || 4000;
+const port = process.env.PORT;
 
 // initialising server
 const app = express();
@@ -34,7 +35,8 @@ app.use(
 app.use(
   cors({
     origin: "http://localhost:5173",
-    methods: ["POST", "PUT", "GET", "PATCH", "OPTIONS", "HEAD"],
+    methods: ["POST", "PUT", "GET", "PATCH", "DELETE", "OPTIONS", "HEAD"],
+    allowedHeaders: ["Content-Type", "crossdomain", "credentials"],
     credentials: true,
   })
 );
@@ -45,7 +47,7 @@ app.listen(port, () => {
 });
 
 app.get("/", (req, res) => {
-  res.status(200).send("Welcome to the NotesAI api!");
+  res.status(200).json("Welcome to the NotesAI api!");
 });
 
 // users route
@@ -53,3 +55,6 @@ app.use("/users", usersRoute);
 
 // notes route
 app.use("/notes", notesRoute);
+
+// questions route
+app.use("/questions", questionsRoute);
