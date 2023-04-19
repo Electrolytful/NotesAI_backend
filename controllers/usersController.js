@@ -4,6 +4,22 @@ const User = require("../models/User.js");
 const session = require("express-session");
 
 // function to display the user currently logged in
+async function displayCurrentUser(req, res) {
+  const user = await User.getUserById(req.session.userid);
+
+  if (user) {
+    const { username, email } = user;
+    const sendUser = {
+      username: username,
+      email: email,
+    };
+    res.status(200).json(sendUser);
+  } else {
+    res.status(404).json({ error: "No user with that id found!" });
+  }
+}
+
+// function to display a user depending on the id in the url
 async function displayUser(req, res) {
   const user = await User.getUserById(req.params.id);
 
@@ -60,9 +76,11 @@ async function loginUser(req, res) {
       res.status().json({ error: "Incorrect password!" });
     } else {
       req.session.userid = user.user_id;
-      res
-        .status(200)
-        .json({ message: `Successfully logged in user: ${user.username}` });
+      req.session.username = user.username;
+      res.status(200).send(req.session);
+      console.log(
+        `User with username: ${req.session.username} just logged in!`
+      );
     }
   } catch (err) {
     return res.status(403).json({ error: err.message });
@@ -71,23 +89,23 @@ async function loginUser(req, res) {
 
 // function to logout the user
 async function logoutUser(req, res) {
-  req.session.destroy();
+  console.log(`User with username: ${req.session.username} just logged out!`);
+  req.session.userid = null;
+  req.session.username = null;
   res.status(200).json({ message: "Successfully logged out!" });
 }
 
 // function to delete a user
 async function destroyUser(req, res) {
-  const user = await User.getUserById(req.params.id);
+  const user = await User.getUserById(req.session.userid);
 
-  if (user) {
-    const deletedUser = await user.destroy();
-    res.status(200).json(deletedUser);
-  } else {
-    res.status(400).json({ error: "No user exists with the given id!" });
-  }
+  const deletedUser = await user.destroy();
+  req.session.userid = null;
+  res.status(200).json(deletedUser);
 }
 
 module.exports = {
+  displayCurrentUser,
   displayUser,
   registerUser,
   loginUser,
