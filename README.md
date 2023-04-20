@@ -1,5 +1,7 @@
 # NotesAI Backend Server
 
+## Link to NotesAI client: https://github.com/Vitali-G/NotesAI---Client
+
 ## Setup
 1. Clone repo using either HTTP or SSH link from GitHub
 2. In the root directory, run ``` npm i ``` to install all required dependancies
@@ -30,6 +32,7 @@
 | /new        | POST        | creates a new note in the database with the logged in users id, returns a JSON object of the created note                          |
 | /:id        | GET         | gets the note with the specified id, returns a JSON object of the note or an error if not found                                    |
 | /:id        | DELETE      | deletes the note with the specified id, returns a JSON object of the deleted note or an error if not found                         |
+| /:id        | PATCH       | updates the notes title and content with the specified id, returns a JSON object of the updated note or an error if not found      |
 
 
 
