@@ -1,12 +1,12 @@
-// authenticator middleware
-
+// authenticator middleware for protecting routes if no valid user login exists
 async function authenticator(req, res, next) {
-  // if the user is not authenticated then redirect to the login screen, otherwise continue
+  // if no user id is found in the session sent by the request, send an error response 401 unauthorised to the client, otherwise continue
   if (!req.session.userid) {
-    res.status(400).send(false);
+    res.status(401).send(false);
   } else {
     next();
   }
 }
+
 
 module.exports = authenticator;

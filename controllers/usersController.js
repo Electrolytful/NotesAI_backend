@@ -2,6 +2,7 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/User.js");
 
+
 // function to display the user currently logged in
 async function displayCurrentUser(req, res) {
   const user = await User.getUserById(req.session.userid);
@@ -14,9 +15,10 @@ async function displayCurrentUser(req, res) {
     };
     res.status(200).json(sendUser);
   } else {
-    res.status(404).json({ error: "No user with that id found!" });
+    res.status(404).json({error: "No user with that id found!"});
   }
 }
+
 
 // function to display a user depending on the id in the url
 async function displayUser(req, res) {
@@ -30,9 +32,10 @@ async function displayUser(req, res) {
     };
     res.status(200).json(sendUser);
   } else {
-    res.status(404).json({ error: "No user with that id found!" });
+    res.status(404).json({error: "No user with that id found!"});
   }
 }
+
 
 // function to register the user
 async function registerUser(req, res) {
@@ -42,9 +45,7 @@ async function registerUser(req, res) {
   const userExists = await User.getUserByEmail(email);
 
   if (userExists) {
-    res.status(400).json({
-      error: "User with that email already exists. Please choose another.",
-    });
+    return res.status(400).json({error: "User with that email already exists. Please choose another."});
   } else {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = {
@@ -57,6 +58,7 @@ async function registerUser(req, res) {
   }
 }
 
+
 // function to login the user
 async function loginUser(req, res) {
   const { email, password } = req.body;
@@ -66,7 +68,7 @@ async function loginUser(req, res) {
     const user = await User.getUserByEmail(email);
 
     if (!user) {
-      res.status(404).json({ error: "No user registered with that email!" });
+      res.status(404).json({error: "No user registered with that email!"});
       return;
     }
 
@@ -74,7 +76,7 @@ async function loginUser(req, res) {
     const passwordCheck = await bcrypt.compare(password, user.password);
 
     if (!passwordCheck) {
-      res.status(400).json({ error: "Incorrect password!" });
+      res.status(400).json({error: "Incorrect password!"});
       return;
     } else {
       req.session.userid = user.user_id;
@@ -85,17 +87,19 @@ async function loginUser(req, res) {
       );
     }
   } catch (err) {
-    return res.status(403).json({ error: err.message });
+    return res.status(400).json({error: err.message});
   }
 }
+
 
 // function to logout the user
 async function logoutUser(req, res) {
   console.log(`User with username: ${req.session.username} just logged out!`);
   req.session.userid = null;
   req.session.username = null;
-  res.status(200).json({ message: "Successfully logged out!" });
+  res.status(200).json({message: "Successfully logged out!"});
 }
+
 
 // function to delete a user
 async function destroyUser(req, res) {
@@ -106,6 +110,7 @@ async function destroyUser(req, res) {
   req.session.username = null;
   res.status(200).json(deletedUser);
 }
+
 
 module.exports = {
   displayCurrentUser,

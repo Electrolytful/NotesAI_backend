@@ -1,6 +1,7 @@
 // imports
 const Note = require("../models/Note.js");
 
+
 async function getAllNotes(req, res) {
   const userid = req.session.userid;
 
@@ -12,6 +13,7 @@ async function getAllNotes(req, res) {
     res.status(200).json([]);
   }
 }
+
 
 async function getNoteById(req, res) {
   const id = req.params.id;
@@ -25,6 +27,7 @@ async function getNoteById(req, res) {
   }
 }
 
+
 async function createNote(req, res) {
   const userid = req.session.userid;
   const { title, content, summary } = req.body;
@@ -37,8 +40,9 @@ async function createNote(req, res) {
   };
 
   const createdNote = await Note.create(newNote);
-  res.status(200).json(createdNote);
+  res.status(201).json(createdNote);
 }
+
 
 async function destroyNote(req, res) {
   const id = req.params.id;
@@ -53,6 +57,7 @@ async function destroyNote(req, res) {
   }
 }
 
+
 async function updateNote(req, res) {
   const id = req.params.id;
 
@@ -65,6 +70,7 @@ async function updateNote(req, res) {
     res.status(404).json({error: "No note with that ID found!"});
   }
 }
+
 
 module.exports = {
   getAllNotes,
