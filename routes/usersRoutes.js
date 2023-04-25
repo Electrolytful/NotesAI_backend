@@ -1,14 +1,27 @@
+// imports
 const { Router } = require("express");
-const usersController = require("../controllers/usersController.js");
 const auth = require("../middleware/auth.js");
+const {
+    registerUser,
+    loginUser,
+    logoutUser,
+    displayCurrentUser,
+    destroyUser,
+    displayUser,
+} = require("../controllers/usersController.js");
 
+
+// initialising router
 const router = Router();
 
-router.post("/register", usersController.registerUser);
-router.post("/login", usersController.loginUser);
-router.get("/logout", auth, usersController.logoutUser);
-router.get("/current", auth, usersController.displayCurrentUser);
-router.delete("/delete", auth, usersController.destroyUser);
-router.get("/:id", usersController.displayUser);
+
+// users routes
+router.post("/register", registerUser);
+router.post("/login", loginUser);
+router.get("/logout", auth, logoutUser);
+router.get("/current", auth, displayCurrentUser);
+router.delete("/delete", auth, destroyUser);
+router.get("/:id", displayUser);
+
 
 module.exports = router;

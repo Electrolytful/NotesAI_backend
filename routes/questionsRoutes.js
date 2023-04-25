@@ -1,12 +1,23 @@
+// imports
 const { Router } = require("express");
-const questionsController = require("../controllers/questionsController.js");
 const auth = require("../middleware/auth.js");
+const {
+    getAllQuestions,
+    createQuestion,
+    getQuestionById,
+    destroyQuestion,
+} = require("../controllers/questionsController.js");
 
+
+// initialising router
 const router = Router();
 
-router.get("/", auth, questionsController.getAllQuestions);
-router.post("/new", auth, questionsController.createQuestion);
-router.get("/:id", auth, questionsController.getQuestionById);
-router.delete("/:id", auth, questionsController.destroyQuestion);
+
+// questions routes
+router.get("/", auth, getAllQuestions);
+router.post("/new", auth, createQuestion);
+router.get("/:id", auth, getQuestionById);
+router.delete("/:id", auth, destroyQuestion);
+
 
 module.exports = router;

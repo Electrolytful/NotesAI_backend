@@ -1,6 +1,7 @@
 // imports
 const Question = require("../models/Question.js");
 
+
 async function getAllQuestions(req, res) {
   const userid = req.session.userid;
 
@@ -12,6 +13,7 @@ async function getAllQuestions(req, res) {
     res.status(200).json([]);
   }
 }
+
 
 async function getQuestionById(req, res) {
   const id = req.params.id;
@@ -25,6 +27,7 @@ async function getQuestionById(req, res) {
   }
 }
 
+
 async function createQuestion(req, res) {
   const userid = req.session.userid;
   const { question, answer } = req.body;
@@ -36,8 +39,9 @@ async function createQuestion(req, res) {
   };
 
   const createdQuestion = await Question.create(newQuestion);
-  res.status(200).json(createdQuestion);
+  res.status(201).json(createdQuestion);
 }
+
 
 async function destroyQuestion(req, res) {
   const id = req.params.id;
@@ -51,6 +55,7 @@ async function destroyQuestion(req, res) {
     res.status(404).json({ error: "No question with that ID found!" });
   }
 }
+
 
 module.exports = {
   getAllQuestions,
